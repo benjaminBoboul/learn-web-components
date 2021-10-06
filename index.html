@@ -5,11 +5,36 @@
 	<title>My web component</title>
 	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
+<template id="card-template">
+    <div class="inline-block shadow-md h-32 w-20">
+        <slot name="card-title">DEFAULT TITLE</slot>
+    </div>
+</template>
+
 <body>
-
-	<some-element>Hello, world!</some-element>
-
-	<script type="text/javascript" src="my-custom-component.js"></script>
-
+	<div class="flex item-start">
+	<card-component>
+		<span slot="card-title">this is my title</span>
+	</card-component>
+	<card-component>
+		<p>hello world</p>
+	</card-component>
+	<card-component></card-component>
+</div>
+	<script>
+		customElements.define('card-component',
+			class extends HTMLElement {
+				constructor() {
+				super();
+				const template = document
+					.getElementById('card-template')
+					.content;
+				const shadowRoot = this.attachShadow({mode: 'open'})
+					.appendChild(template.cloneNode(true))
+				}
+			}
+		)
+	</script>
 </body>
 </html>
